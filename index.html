@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>API Reference</title>
+    <title>Marketing Suite API Reference</title>
 
     <style>
       .highlight table td { padding: 5px; }
@@ -200,7 +200,7 @@
       <script src="javascripts/all.js"></script>
   </head>
 
-  <body class="index" data-languages="[&quot;shell&quot;,&quot;ruby&quot;,&quot;python&quot;,&quot;javascript&quot;]">
+  <body class="index" data-languages="[&quot;json&quot;,&quot;xml&quot;]">
     <a href="#" id="nav-button">
       <span>
         NAV
@@ -210,10 +210,8 @@
     <div class="tocify-wrapper">
       <img src="images/logo.png" alt="Logo" />
         <div class="lang-selector">
-              <a href="#" data-language-name="shell">shell</a>
-              <a href="#" data-language-name="ruby">ruby</a>
-              <a href="#" data-language-name="python">python</a>
-              <a href="#" data-language-name="javascript">javascript</a>
+              <a href="#" data-language-name="json">json</a>
+              <a href="#" data-language-name="xml">xml</a>
         </div>
         <div class="search">
           <input type="text" class="search" id="input-search" placeholder="Search">
@@ -222,8 +220,7 @@
       <div id="toc">
       </div>
         <ul class="toc-footer">
-            <li><a href='#'>Sign Up for a Developer Key</a></li>
-            <li><a href='https://github.com/tripit/slate'>Documentation Powered by Slate</a></li>
+            <li><a href='https://api.eccmp.com/services2/help/'>Swagger UI</a></li>
         </ul>
     </div>
     <div class="page-wrapper">
@@ -231,227 +228,363 @@
       <div class="content">
         <h1 id="introduction">Introduction</h1>
 
-<p>Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.</p>
+<h2 id="purpose">Purpose</h2>
 
-<p>We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.</p>
+<p>The purpose of this document is provide a high-level overview of the Application Programming Interface (API) capabilities offered by Experian&rsquo;s Marketing Suite platform.
+APIs allow clients to simplify and / or automate the process of communicating with Marketing Suite for a wide range of processing functions. For example, you can use an API to load data into your database, to trigger the deployment of a marketing Campaign, or to create a new Filter.</p>
 
-<p>This example API documentation page was created with <a href="https://github.com/tripit/slate">Slate</a>. Feel free to edit it and use it as a base for your own API&rsquo;s documentation.</p>
+<p>The key benefit to an API is that the information passed back and forth is structured and pre-defined, so there&rsquo;s no ambiguity. The expectations on both sides are clearly defined. In simplest terms, an API provides a common understanding between two systems that states, &ldquo;If you provide me with these instructions, I will perform the specified action, or return the requested information.&rdquo;</p>
+
+<h2 id="api-categories">API Categories</h2>
+
+<p>The Marketing Suite API endpoints are grouped into the following categories, all of which are described below in more detail.</p>
+
+<ol>
+<li><a href="?http#api-category-data-management">Data Management</a></li>
+<li>&lt;a href=&ldquo;Campaign Management</li>
+<li>Campaign Deployment</li>
+<li>Reporting</li>
+</ol>
+
+<h2 id="architecture">Architecture</h2>
+
+<p>Through the use of different commands called &quot;HTTP methods,&rdquo; many of the Marketing Suite endpoints provide a full range of functionality &ndash; creating new items, updating or deleting existing items, as well as requesting information about a specific item.</p>
+
+<ul>
+<li>GET: Used to read or retrieve data without directly modifying it.</li>
+<li>POST: Used to create a new asset.</li>
+<li>PUT: Used to update an existing asset.</li>
+<li>PATCH: Used to modify an existing asset; the request needs to contain only the necessary changes to the asset, not the complete asset.</li>
+<li>DELETE: Used to delete an existing asset.</li>
+</ul>
+
+<p>Please note that not every method is supported by every endpoint. For example, the &ldquo;Email Campaign&rdquo; endpoint allows you to use GET, POST, PUT, and DELETE, but the &ldquo;Preview&rdquo; endpoint supports only the POST method.</p>
+
+<p>Most of the Marketing Suite API endpoints are built using REST, or &ldquo;REpresentational State Transfer.” REST is in architectural style that imposes a set of constraints on all components in the system. These constraints control the way that components interact with one another. A service built using these constraints is said to be &quot;RESTful.&rdquo;</p>
+
+<p>Unlike other architectures, REST allows you to specify the data you want to access via a URL (with the ability to use optional parameters), and to specify the action to be taken via the HTTP method. Responses are returned in the expected format, along with a standard HTTP return code.</p>
+
+<h3 id="authentication">Authentication</h3>
+
+<p>Most Marketing Suite API endpoints require security authentication. &ldquo;Authentication&rdquo; refers to the process of determining that you are, in fact, who you say you are.</p>
+
+<p>Within Marketing Suite, authentication is handled by an open standard protocol called OAuth 2.0. This protocol was designed specifically for HTTP, and provides standard mechanisms to allow REST API users to request access to a particular service.</p>
+
+<p>For more information on authentication, including how to request your OAuth 2.0 token, please see the the Marketing Suite API How-to Guide or the Marketing Suite Online Help system.</p>
+
+<h3 id="authorization">Authorization</h3>
+
+<p>The Authentication process described above is designed to validate that &ldquo;you are who you say you are.&rdquo; The second security check utilized by Marketing Suite is Authorization, which validates that you have the proper access privileges to the service that you requested.</p>
+
+<p>Authorization for the Marketing Suite APIs is handled through the same roles, groups, and privileges that are used in the platform&rsquo;s user interface. As an example, if your user account is configured to allow you to create Campaigns in the Marketing Suite interface, then you can also use the Campaign endpoint to create Campaigns.</p>
+
+<p>If you attempt an API request for a service for which you have not been granted access, you will receive either a &ldquo;401 - Unauthorized&rdquo; error message, or a &ldquo;403 - Forbidden&rdquo; error message.</p>
+
+<p>You can find details regarding your user account and privileges on the Security Settings screen within the Marketing Suite application.</p>
+
+<h2 id="additional-resources">Additional Resources</h2>
+
+<p>Additional information about most of the Marketing Suite API endpoints can be found on our developer portal:</p>
+
+<ul>
+<li>For users in the U.S.: <a href="https://api.eccmp.com/services2/help/">https://api.eccmp.com/services2/help/</a></li>
+<li>For users in Europe: <a href="https://api.ccmp.eu/services2/help/">https://api.ccmp.eu/services2/help/</a></li>
+</ul>
+
+<h1 id="api-category-data-management">API Category: Data Management</h1>
+
+<h2 id="overview">Overview</h2>
+
+<p>Marketing Suite allows you to load data into your database by means of API calls. The platform provides several different endpoints, with different features designed to meet your specific requirements.</p>
+
+<p>The Data Management endpoints are as follows:</p>
+
+<ul>
+<li>HTTP POST</li>
+<li>Standard Data Load</li>
+<li>Batch Import</li>
+<li>Sequential Data Load</li>
+<li>Advanced Data Load</li>
+</ul>
+
+<p>The following table summarizes the differences between the different Data Management endpoints:</p>
+
+<table><thead>
+<tr>
+<th></th>
+<th>HTTP POST</th>
+<th>Standard Data Load</th>
+<th>Batch Import</th>
+<th>Sequential Data Load</th>
+<th>Advanced Data Load</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>XML Support</td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>JSON Support</td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td></td>
+<td>Y</td>
+</tr>
+<tr>
+<td>OAuth 2.0 authentication</td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>Load data to joined tables</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>Multiple records in the same request</td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td></td>
+</tr>
+<tr>
+<td>Endpoint can be used to trigger a Campaign</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td></td>
+</tr>
+</tbody></table>
 
 <h1 id="authentication">Authentication</h1>
 
+<p>&ldquo;Authentication&rdquo; refers to the process of verifying that the person requesting a service is, in fact, who he says he is. Within Marketing Suite, authentication is handled by an open standard protocol called Oauth 2.0. This protocol was designed specifically for HTTP, and provides standard mechanisms to allow REST API users to request access to a particular service.</p>
+
+<p>Authentication with Oauth 2.0 consists of several steps. In the first step, the end-user obtains a &ldquo;Consumer Key&rdquo; and a &ldquo;Consumer Secret.&rdquo; The Consumer Key is analogous to a username, and is considered public information; the Consumer Secret is analogous to a password, and is kept confidential. Both of these pieces are managed at the user level, and can be obtained from within the Marketing Suite user interface (see the Generating Your Consumer Key and Consumer Secret section below for details on this process)&hellip;</p>
+
+<p>The following diagram depicts this authentication process.</p>
+
+<p><img src="images/diagram1.png"/></p>
+
+<h2 id="generating-your-consumer-key-and-consumer-secret">Generating Your Consumer Key and Consumer Secret</h2>
+
+<p>The Consumer Key and Consumer Secret are used to request a token. These credentials are managed at the user level. You can view, set, and edit your API credentials from the Security Setting screen in Marketing Suite.
+To generate your Consumer Key and Consumer Secret:</p>
+
+<ol>
+<li>In the System Tray, select Data Integration &gt; Settings &gt; API Keys. The <strong>API KEYS</strong> screen is displayed.</li>
+<li>Within the &ldquo;Oauth 2 API Keys&rdquo; section, you&rsquo;ll find your Client ID, Consumer Key, and Consumer Secret.</li>
+</ol>
+
+<p>If you ever need to reset or update your Consumer Secret, navigate to the API KEYS screen as described above, then click &ldquo;Regenerate Secret.&rdquo; The system generates a new Consumer Secret, and displays it on the screen.</p>
+
+<h2 id="requesting-your-token">Requesting Your Token</h2>
+
 <blockquote>
-<p>To authorize, use this code:</p>
+<p>Below is a sample token request message:</p>
 </blockquote>
-<pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
+<pre class="highlight http tab-http"><code><span class="nf">POST</span> <span class="nn">https://api.eccmp.com/services2/authorization/oAuth2/Token</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="p">:</span> <span class="s">api.eccmp.com</span>
+<span class="na">Content-Type</span><span class="p">:</span> <span class="s">application/x-www-form-urlencoded</span>
+<span class="na">Content-Length</span><span class="p">:</span> <span class="s">98</span>
+<span class="s">username=NTcwNjozOTQ=&amp;password=1c106f90ec274340bde50ea78f410422&amp;client_id=5706&amp;grant_type=password</span>
+</code></pre><pre class="highlight json tab-json"><code><span class="err">//</span><span class="w"> </span><span class="err">Below</span><span class="w"> </span><span class="err">is</span><span class="w"> </span><span class="err">a</span><span class="w"> </span><span class="err">sample</span><span class="w"> </span><span class="err">token</span><span class="w"> </span><span class="err">response</span><span class="w"> </span><span class="err">message</span><span class="w"> </span><span class="err">(for</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">sake</span><span class="w"> </span><span class="err">of</span><span class="w"> </span><span class="err">readability</span><span class="p">,</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">token</span><span class="w"> </span><span class="err">depicted</span><span class="w"> </span><span class="err">here</span><span class="w"> </span><span class="err">is</span><span class="w"> </span><span class="err">much</span><span class="w"> </span><span class="err">shorter</span><span class="w"> </span><span class="err">than</span><span class="w"> </span><span class="err">what</span><span class="w"> </span><span class="err">a</span><span class="w"> </span><span class="err">real</span><span class="w"> </span><span class="err">token</span><span class="w"> </span><span class="err">would</span><span class="w"> </span><span class="err">be)</span><span class="p">:</span><span class="w">
 
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-</code></pre><pre class="highlight shell tab-shell"><code><span class="c"># With shell, you can just pass the correct header with each request</span>
-curl <span class="s2">"api_endpoint_here"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
-
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
-</code></pre>
-<blockquote>
-<p>Make sure to replace <code class="prettyprint">meowmeowmeow</code> with your API key.</p>
-</blockquote>
-
-<p>Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our <a href="http://example.com/developers">developer portal</a>.</p>
-
-<p>Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:</p>
-
-<p><code class="prettyprint">Authorization: meowmeowmeow</code></p>
-
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
-
-<h1 id="kittens">Kittens</h1>
-
-<h2 id="get-all-kittens">Get All Kittens</h2>
-<pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-</code></pre><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://example.com/api/kittens"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
-
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
-<span class="kd">let</span> <span class="nx">kittens</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">kittens</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
-</code></pre>
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Fluffums"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"calico"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Max"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">]</span><span class="w">
-</span></code></pre>
-<p>This endpoint retrieves all kittens.</p>
-
-<h3 id="http-request">HTTP Request</h3>
-
-<p><code class="prettyprint">GET http://example.com/api/kittens</code></p>
-
-<h3 id="query-parameters">Query Parameters</h3>
-
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Default</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>include_cats</td>
-<td>false</td>
-<td>If set to true, the result will also include cats.</td>
-</tr>
-<tr>
-<td>available</td>
-<td>true</td>
-<td>If set to false, the result will include kittens that have already been adopted.</td>
-</tr>
-</tbody></table>
-
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-
-<h2 id="get-a-specific-kitten">Get a Specific Kitten</h2>
-<pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://example.com/api/kittens/2"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
-
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
-<span class="kd">let</span> <span class="nx">max</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">kittens</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-</code></pre>
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Max"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
+</span><span class="p">{</span><span class="w">
+</span><span class="s2">"access_token"</span><span class="p">:</span><span class="s2">"AAEAAG39ZdZRoGDRZJggMdv43pxrIVokFD57mhz03ncF"</span><span class="p">,</span><span class="w">
+</span><span class="s2">"token_type"</span><span class="p">:</span><span class="s2">"bearer"</span><span class="p">,</span><span class="w">
+</span><span class="s2">"expires_in"</span><span class="p">:</span><span class="mi">28800</span><span class="p">,</span><span class="w">
+</span><span class="s2">"refresh_token"</span><span class="p">:</span><span class="s2">"h8fR!IAAAAFMbAP2AWWeil7JS9YKx3mURSZypddIawaUJQpBjUYarGI2g"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
-<p>This endpoint retrieves a specific kitten.</p>
+<p>Once you have your Consumer Key and Consumer Secret, the next step in the authorization process is to submit a request message to obtain a token from the Oauth server. This message must be submitted using the POST method, with a Request Content Type of <application/x-www-form-urlencoded>.</p>
 
-<aside class="warning">Inside HTML code blocks like this one, you can&rsquo;t use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
-
-<h3 id="http-request">HTTP Request</h3>
-
-<p><code class="prettyprint">GET http://example.com/kittens/&lt;ID&gt;</code></p>
-
-<h3 id="url-parameters">URL Parameters</h3>
+<p>The request message must contain the following parameters:</p>
 
 <table><thead>
 <tr>
-<th>Parameter</th>
+<th>Keyword</th>
+<th>Required</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>ID</td>
-<td>The ID of the kitten to retrieve</td>
+<td>username</td>
+<td>Required</td>
+<td>Your Consumer Key, found on the <strong>API ACCESS</strong> screen</td>
+</tr>
+<tr>
+<td>password</td>
+<td>Required</td>
+<td>Your Consumer Secret, found on the <strong>API ACCESS</strong> screen</td>
+</tr>
+<tr>
+<td>client_id</td>
+<td>Optional</td>
+<td>If used, must be set to your client identifier, which can be found on either the <strong>EDIT USER ACCESS RIGHTS</strong> screen or the <strong>API ACCESS</strong> screen.</td>
+</tr>
+<tr>
+<td>grant_type</td>
+<td>Required</td>
+<td>&ldquo;password&rdquo; (no quotes)</td>
 </tr>
 </tbody></table>
 
-          <h1 id="errors">Errors</h1>
+<p>To request a token:</p>
 
-<aside class="notice">This error section is stored in a separate file in `includes/_errors.md`. Slate allows you to optionally separate out your docs into many files&hellip;just save them to the `includes` folder and add them to the top of your `index.md`&lsquo;s frontmatter. Files are included in the order listed.</aside>
+<ol>
+<li>Submit the request message using the POST method, with the parameters defined above, to the following URL:
 
-<p>The Kittn API uses the following error codes:</p>
+<ul>
+<li>https://api.eccmp.com/services2/authorization/oAuth2/Token</li>
+</ul></li>
+<li>If your call fails, you&rsquo;ll receive an error response message, indicating that the token has not been generated. If your call is successful, you&rsquo;ll receive a response message in JSON format containing the following information:</li>
+</ol>
 
 <table><thead>
 <tr>
-<th>Error Code</th>
-<th>Meaning</th>
+<th>Keyword</th>
+<th>Required</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>400</td>
-<td>Bad Request &ndash; Your request sucks</td>
+<td>access_token</td>
+<td>The Oauth 2.0 token.</td>
 </tr>
 <tr>
-<td>401</td>
-<td>Unauthorized &ndash; Your API key is wrong</td>
+<td>token_type</td>
+<td>This value will always be “bearer.&ldquo;</td>
 </tr>
 <tr>
-<td>403</td>
-<td>Forbidden &ndash; The kitten requested is hidden for administrators only</td>
+<td>expires_in</td>
+<td>Lifetime of the token in seconds.</td>
 </tr>
 <tr>
-<td>404</td>
-<td>Not Found &ndash; The specified kitten could not be found</td>
-</tr>
-<tr>
-<td>405</td>
-<td>Method Not Allowed &ndash; You tried to access a kitten with an invalid method</td>
-</tr>
-<tr>
-<td>406</td>
-<td>Not Acceptable &ndash; You requested a format that isn&rsquo;t json</td>
-</tr>
-<tr>
-<td>410</td>
-<td>Gone &ndash; The kitten requested has been removed from our servers</td>
-</tr>
-<tr>
-<td>418</td>
-<td>I&rsquo;m a teapot</td>
-</tr>
-<tr>
-<td>429</td>
-<td>Too Many Requests &ndash; You&rsquo;re requesting too many kittens! Slow down!</td>
-</tr>
-<tr>
-<td>500</td>
-<td>Internal Server Error &ndash; We had a problem with our server. Try again later.</td>
-</tr>
-<tr>
-<td>503</td>
-<td>Service Unavailable &ndash; We&rsquo;re temporarily offline for maintenance. Please try again later.</td>
+<td>refresh_token</td>
+<td>This parameter is not currently used.</td>
 </tr>
 </tbody></table>
+
+<h3 id="using-your-token">Using Your Token</h3>
+
+<p>With your valid token, you can now begin making REST API service calls, utilizing any of the platform&rsquo;s RESTful APIs. The token must be provided within the header of each of your web service calls. Each call must contain an authorization to Bearer type, followed by your token text string.</p>
+
+<p>Below is an example of an HTTP header:</p>
+
+<p><code class="prettyprint">Authorization: Bearer 123456789761657894564564fh7rgjuhsrn56yu4567y56re4qnu56sr</code></p>
+
+<p>As noted above, your token will expire after a set period of time. If you attempt an API request call, and your token has expired, you&rsquo;ll receive a response message with the &quot;401 - Unauthorized&rdquo; response code. At this point, you&rsquo;ll need to repeat the steps described above to request a new token. Once you&rsquo;ve received this new token, you can begin making API request calls again.</p>
+
+<h1 id="payload">Payload</h1>
+<pre class="highlight json tab-json"><code><span class="err">//</span><span class="w"> </span><span class="err">The</span><span class="w"> </span><span class="err">three</span><span class="w"> </span><span class="err">main</span><span class="w"> </span><span class="err">sections</span><span class="w"> </span><span class="err">in</span><span class="w"> </span><span class="err">a</span><span class="w"> </span><span class="err">JSON</span><span class="w"> </span><span class="err">payload</span><span class="w"> </span><span class="err">look</span><span class="w"> </span><span class="err">like</span><span class="w"> </span><span class="err">this</span><span class="p">:</span><span class="w"> </span><span class="err">(General</span><span class="w"> </span><span class="err">structure</span><span class="w"> </span><span class="err">of</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">AET</span><span class="w"> </span><span class="err">payload)</span><span class="w">
+
+</span><span class="p">{</span><span class="w">
+</span><span class="s2">"_data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">…</span><span class="w"> </span><span class="p">},</span><span class="w">
+</span><span class="s2">"_campaignMetadata"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">…</span><span class="w"> </span><span class="p">},</span><span class="w">
+</span><span class="s2">"_importOptions"</span><span class="p">:</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre><pre class="highlight xml tab-xml"><code><span class="c">&lt;!-- The three main sections in a XML payload look like this: (General structure of the AET payload) --&gt;</span>
+
+<span class="nt">&lt;_apiData</span> <span class="na">xmlns:json=</span><span class="s">"http://james.newtonking.com/projects/json"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;_data&gt;</span>
+  <span class="nt">&lt;/_data&gt;</span>
+  <span class="nt">&lt;_campaignMetadata&gt;</span>
+  <span class="nt">&lt;/_campaignMetadata&gt;</span>
+  <span class="nt">&lt;_importOptions&gt;</span>
+  <span class="nt">&lt;/_importOptions&gt;</span>
+<span class="nt">&lt;/_apiData&gt;</span>
+</code></pre>
+<p>The Advanced Event Trigger request payload is composed of the following three main objects:</p>
+
+<ul>
+<li><strong>_data</strong> (mandatory): This section defines the entity relationships for the payload, and contains the data for the relational insert and the campaign message.</li>
+<li><strong>_campaignMetadata</strong> (optional): If used, this section contains campaign data that is never inserted into an entity, but is available in a campaign for content blocks (not available for use in looping blocks).</li>
+<li><strong>_importOptions</strong> (optional): If used, this section defines the import rules for each entity present in the payload. If no section is present for a given entity, the data will be imported according to the defaults behavior for those fields.</li>
+</ul>
+
+<h2 id="section-_data">Section: _data</h2>
+<pre class="highlight json tab-json"><code><span class="err">//Simple</span><span class="w"> </span><span class="err">_data</span><span class="w"> </span><span class="err">section</span><span class="w"> </span><span class="err">with</span><span class="w"> </span><span class="err">one</span><span class="w"> </span><span class="err">parent</span><span class="w"> </span><span class="err">join</span><span class="w"> </span><span class="err">and</span><span class="w"> </span><span class="err">one</span><span class="w"> </span><span class="err">child</span><span class="w"> </span><span class="err">join</span><span class="w"> </span><span class="err">for</span><span class="w"> </span><span class="err">JSON</span><span class="w"> </span><span class="err">payload</span><span class="w">
+
+</span><span class="p">{</span><span class="w">
+  </span><span class="s2">"_data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"recipient"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"name_first"</span><span class="p">:</span><span class="w"> </span><span class="s2">"John"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"name_last"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Smith"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"john.smith@gmail.com"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"recipient_to_organization"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">//An</span><span class="w"> </span><span class="s2">"upward"</span><span class="w"> </span><span class="err">join</span><span class="w"> </span><span class="err">-</span><span class="w"> </span><span class="err">to</span><span class="w"> </span><span class="err">a</span><span class="w"> </span><span class="err">parent</span><span class="w">
+          </span><span class="s2">"organization_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Experian"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"organization_city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Costa Mesa"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="s2">"order.order_to_recipient"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">A</span><span class="w"> </span><span class="s2">"downward"</span><span class="w"> </span><span class="err">join</span><span class="w"> </span><span class="err">-</span><span class="w"> </span><span class="err">to</span><span class="w"> </span><span class="err">a</span><span class="w"> </span><span class="err">child</span><span class="w">
+          </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"order_no"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2834737"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"total"</span><span class="p">:</span><span class="w"> </span><span class="s2">"129.99"</span><span class="p">,</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"order_no"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2834738"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"total"</span><span class="p">:</span><span class="w"> </span><span class="s2">"59.99"</span><span class="p">,</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre><pre class="highlight xml tab-xml"><code><span class="c">&lt;!-- Simple _data section with one parent join and one child join for XML payload --&gt;</span>
+
+<span class="nt">&lt;_apiData</span> <span class="na">xmlns:json=</span><span class="s">"http://james.newtonking.com/projects/json"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;_data&gt;</span>
+    <span class="nt">&lt;recipient</span> <span class="na">json:Array=</span><span class="s">"true"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;name_first&gt;</span>John<span class="nt">&lt;/name_first&gt;</span>
+      <span class="nt">&lt;last_name&gt;</span>Smith<span class="nt">&lt;/last_name&gt;</span>
+      <span class="nt">&lt;email&gt;</span>john.smith@gmail.com<span class="nt">&lt;/email&gt;</span>
+      <span class="nt">&lt;recipient_to_organization</span> <span class="na">json:Array=</span><span class="s">"true"</span><span class="nt">&gt;</span> <span class="c">&lt;!-- An "upward" join - to a parent --&gt;</span>
+        <span class="nt">&lt;organization_name&gt;</span>Experian<span class="nt">&lt;/organization_name&gt;</span>
+        <span class="nt">&lt;organization_city&gt;</span>Costa Mesa<span class="nt">&lt;/organization_city&gt;</span>
+      <span class="nt">&lt;/recipient_to_organization&gt;</span>
+      <span class="nt">&lt;order.order_to_recipient</span> <span class="na">json:Array=</span><span class="s">"true"</span><span class="nt">&gt;</span> <span class="c">&lt;!-- A "downward" join - to a child --&gt;</span>
+        <span class="nt">&lt;order_no&gt;</span>2834737<span class="nt">&lt;/order_no&gt;</span>
+        <span class="nt">&lt;total&gt;</span>129.99<span class="nt">&lt;/total&gt;</span>
+        <span class="nt">&lt;/order.order_to_recipient&gt;</span>
+          www.experian.com/marketingservices Advanced Event Trigger Technical Guide | Version 1.5 | Page 14
+        <span class="nt">&lt;order.order_to_recipient</span> <span class="na">json:Array=</span><span class="s">"true"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;order_no&gt;</span>2834738<span class="nt">&lt;/order_no&gt;</span>
+        <span class="nt">&lt;total&gt;</span>59.99<span class="nt">&lt;/total&gt;</span>
+      <span class="nt">&lt;/order.order_to_recipient&gt;</span>
+    <span class="nt">&lt;/recipient&gt;</span>
+  <span class="nt">&lt;/_data&gt;</span>
+<span class="nt">&lt;/_apiData&gt;</span>
+</code></pre>
+<p>The _data object is a nested series of JSON objects, each one representing an entity record.</p>
+
+<p>If you are sending data to the AET endpoint to trigger a campaign send, the root node within _data must be the target entity for the campaign you wish to send the message. For instance, if the campaign you wish to trigger was created targeting the entity named “recipient,” then the root node of _data must be “recipient.”</p>
+
+<p>In the figure below, you can see the structure for the _data section. First, notice that the root node within _data is named “recipient,” and that it&rsquo;s a collection of objects. At the current time, relational insert and AET don&rsquo;t support multiple records in this root node collection (i.e., sending bulk or multiple messages at once, or inserting multiple records at once, for the target entity).</p>
+
+<h2 id="section-_campaignmetadata">Section: _campaignMetadata</h2>
+
+<p>The payload can contain an additional section called _campaignMetadata that is never inserted into the platform’s entity tables, but contains additional information available for personalization within the campaign or in content blocks (not supported on the entities that require looping blocks to personalize). The objects in this section are explicitly never saved, as they don’t relate to physical columns or the relational structure.</p>
+
+<p>This section is optional, and it’s irrelevant when using the Relational Data Insert endpoint.</p>
 
       </div>
       <div class="dark-box">
           <div class="lang-selector">
-                <a href="#" data-language-name="shell">shell</a>
-                <a href="#" data-language-name="ruby">ruby</a>
-                <a href="#" data-language-name="python">python</a>
-                <a href="#" data-language-name="javascript">javascript</a>
+                <a href="#" data-language-name="json">json</a>
+                <a href="#" data-language-name="xml">xml</a>
           </div>
       </div>
     </div>
