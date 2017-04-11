@@ -3,6 +3,8 @@ title: Marketing Suite API Reference
 
 language_tabs:
   - http
+  - json
+  - xml
 
 toc_footers:
   - <a href='https://api.eccmp.com/services2/help/'>Swagger UI</a>
@@ -25,8 +27,8 @@ The key benefit to an API is that the information passed back and forth is struc
 
 The Marketing Suite API endpoints are grouped into the following categories, all of which are described below in more detail.
 
-1. Data Management
-2. Campaign Management
+1. <a href="?http#api-category-data-management">Data Management</a>
+2. <a href="Campaign Management
 3. Campaign Deployment
 4. Reporting
 
@@ -68,8 +70,8 @@ You can find details regarding your user account and privileges on the Security 
 
 Additional information about most of the Marketing Suite API endpoints can be found on our developer portal:
 
-* For users in the U.S.: https://api.eccmp.com/services2/help/
-* For users in Europe: https://api.ccmp.eu/services2/help/
+* For users in the U.S.: <a href="https://api.eccmp.com/services2/help/">https://api.eccmp.com/services2/help/</a>
+* For users in Europe: <a href="https://api.ccmp.eu/services2/help/">https://api.ccmp.eu/services2/help/</a>
 
 # API Category: Data Management
 
@@ -124,7 +126,7 @@ The following diagram depicts this authentication process.
 The Consumer Key and Consumer Secret are used to request a token. These credentials are managed at the user level. You can view, set, and edit your API credentials from the Security Setting screen in Marketing Suite.
 To generate your Consumer Key and Consumer Secret:
 
-1. In the System Tray, select Data Integration > Settings > API Keys. The API KEYS screen is displayed.
+1. In the System Tray, select Data Integration > Settings > API Keys. The **API KEYS** screen is displayed.
 2. Within the "Oauth 2 API Keys" section, you'll find your Client ID, Consumer Key, and Consumer Secret.
 
 If you ever need to reset or update your Consumer Secret, navigate to the API KEYS screen as described above, then click "Regenerate Secret." The system generates a new Consumer Secret, and displays it on the screen.
@@ -132,6 +134,7 @@ If you ever need to reset or update your Consumer Secret, navigate to the API KE
 ## Requesting Your Token
 
 > Below is a sample token request message:
+
 ```http
 POST https://api.eccmp.com/services2/authorization/oAuth2/Token HTTP/1.1
 Host: api.eccmp.com
@@ -140,6 +143,7 @@ Content-Length: 98
 username=NTcwNjozOTQ=&password=1c106f90ec274340bde50ea78f410422&client_id=5706&grant_type=password
 ```
 > Below is a sample token response message (for the sake of readability, the token depicted here is much shorter than what a real token would be):
+
 ```json
 {
 "access_token":"AAEAAG39ZdZRoGDRZJggMdv43pxrIVokFD57mhz03ncF",
@@ -155,9 +159,9 @@ The request message must contain the following parameters:
 
 Keyword | Required | Description
 -|-|-
-username | Required | Your Consumer Key, found on the API ACCESS screen
-password | Required | Your Consumer Secret, found on the API ACCESS screen
-client_id | Optional | If used, must be set to your client identifier, which can be found on either the EDIT USER ACCESS RIGHTS screen or the API ACCESS screen.
+username | Required | Your Consumer Key, found on the **API ACCESS** screen
+password | Required | Your Consumer Secret, found on the **API ACCESS** screen
+client_id | Optional | If used, must be set to your client identifier, which can be found on either the **EDIT USER ACCESS RIGHTS** screen or the **API ACCESS** screen.
 grant_type | Required | "password" (no quotes)
 
 To request a token:
@@ -182,3 +186,34 @@ Below is an example of an HTTP header:
 `Authorization: Bearer 123456789761657894564564fh7rgjuhsrn56yu4567y56re4qnu56sr`
 
 As noted above, your token will expire after a set period of time. If you attempt an API request call, and your token has expired, you'll receive a response message with the "401 - Unauthorized" response code. At this point, you'll need to repeat the steps described above to request a new token. Once you've received this new token, you can begin making API request calls again.
+
+# Payload
+
+> The three main sections in a JSON payload look like this: (General structure of the AET payload)
+
+```json
+{
+"_data": { … },
+"_campaignMetadata": { … },
+"_importOptions":
+}
+```
+
+> The three main sections in a XML payload look like this: (General structure of the AET payload)
+
+```xml
+<_apiData xmlns:json="http://james.newtonking.com/projects/json">
+  <_data>
+  </_data>
+  <_campaignMetadata>
+  </_campaignMetadata>
+  <_importOptions>
+  </_importOptions>
+</_apiData>
+```
+
+The Advanced Event Trigger request payload is composed of the following three main objects:
+
+* **_data** (mandatory): This section defines the entity relationships for the payload, and contains the data for the relational insert and the campaign message.
+* **_campaignMetadata** (optional): If used, this section contains campaign data that is never inserted into an entity, but is available in a campaign for content blocks (not available for use in looping blocks).
+* **_importOptions** (optional): If used, this section defines the import rules for each entity present in the payload. If no section is present for a given entity, the data will be imported according to the defaults behavior for those fields.
