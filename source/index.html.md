@@ -2,6 +2,8 @@
 title: Marketing Suite API Reference
 
 language_tabs:
+  - http
+  - json
   - javascript
 
 toc_footers:
@@ -88,12 +90,12 @@ The following table summarizes the differences between the different Data Manage
 
    | HTTP POST | Standard Data Load | Batch Import | Sequential Data Load | Advanced Data Load
 ---|-----------|--------------------|--------------|----------------------|--------------------
-XML Support | X | Y | Y | Y | Y
-JSON Support | X | Y | Y | X | Y
-OAuth 2.0 authentication | X | Y | Y | Y | Y
+XML Support |   | Y | Y | Y | Y
+JSON Support |   | Y | Y |   | Y
+OAuth 2.0 authentication |   | Y | Y | Y | Y
 Load data to joined tables | Y | Y | Y | Y | Y
-Multiple records in the same request | X | X | Y | Y | X
-Endpoint can be used to trigger a Campaign | Y | Y | Y | Y | X
+Multiple records in the same request |   |   | Y | Y |  
+Endpoint can be used to trigger a Campaign | Y | Y | Y | Y |  
 
 ## HTTP POST
 
@@ -102,3 +104,80 @@ The HTTP POST endpoint is used to submit data collected from your consumers via 
 This endpoint does not support authentication, nor does it support JSON or XML. The request can optionally be secured by using the HTTPS protocol, as long as the correct Customer ID and Form ID are provided, and the right field names are posted to the Form. If using HTTPS, please note that the connection is encrypted, but the data being passed is not encrypted.
 
 The following diagram depicts the processing flow for loading data via the HTTP POST endpoint.
+
+# Authentication
+
+"Authentication" refers to the process of verifying that the person requesting a service is, in fact, who he says he is. Within Marketing Suite, authentication is handled by an open standard protocol called Oauth 2.0. This protocol was designed specifically for HTTP, and provides standard mechanisms to allow REST API users to request access to a particular service.
+
+Authentication with Oauth 2.0 consists of several steps. In the first step, the end-user obtains a "Consumer Key" and a "Consumer Secret." The Consumer Key is analogous to a username, and is considered public information; the Consumer Secret is analogous to a password, and is kept confidential. Both of these pieces are managed at the user level, and can be obtained from within the Marketing Suite user interface (see the Generating Your Consumer Key and Consumer Secret section below for details on this process).
+
+Oauth 2.0 supports a handful of different methods called "grant types" for granting access to a requested service. Marketing Suite utilizes only one grant type: "Password." The second step in the authentication process involves using this grant type to request a "token." A token is a text string that, when provided in a request message, will allow the user access to the requested service. Tokens are valid only for a certain period of time. By default, Marketing Suite tokens expire after eight hours, but you can optionally adjust this duration (see the Modifying Your Security Settings section for details on this process).
+
+The Oauth 2.0 protocol defines several different types of tokens. Marketing Suite uses the most common type of token, known as "bearer." A bearer token is a randomly-generated text string without any sort of encryption key. When you use this token to make an API service call, you are assumed to be the owner, or "bearer" of the token.
+
+To get a token, you must provide your credentials (the Consumer Key and Secret) directly to the authentication server via a POST request (see the Requesting Your Token section below for details on his process). If these credentials are valid, the server replies back with the token. With this token now in hand, you are now fully authenticated, and you can begin making REST API service calls.
+
+The following diagram depicts this authentication process.
+
+<img src="images/diagram1.png"/>
+
+## Generating Your Consumer Key and Consumer Secret
+
+The Consumer Key and Consumer Secret are used to request a token. These credentials are managed at the user level. You can view, set, and edit your API credentials from the Security Setting screen in Marketing Suite.
+To generate your Consumer Key and Consumer Secret:
+
+1. In the System Tray, select Data Integration > Settings > API Keys. The API KEYS screen is displayed.
+2. Within the "Oauth 2 API Keys" section, you'll find your Client ID, Consumer Key, and Consumer Secret.
+
+If you ever need to reset or update your Consumer Secret, navigate to the API KEYS screen as described above, then click "Regenerate Secret." The system generates a new Consumer Secret, and displays it on the screen.
+
+## Requesting Your Token
+
+Once you have your Consumer Key and Consumer Secret, the next step in the authorization process is to submit a request message to obtain a token from the Oauth server. This message must be submitted using the POST method, with a Request Content Type of <application/x-www-form-urlencoded>.
+
+The request message must contain the following parameters:
+
+Keyword | Required | Description
+-|-|-
+username | Required | Your Consumer Key, found on the API ACCESS screen
+password | Required | Your Consumer Secret, found on the API ACCESS screen
+client_id | Optional | If used, must be set to your client identifier, which can be found on either the EDIT USER ACCESS RIGHTS screen or the API ACCESS screen.
+grant_type | Required | "password" (no quotes)
+
+```http
+POST https://api.eccmp.com/services2/authorization/oAuth2/Token HTTP/1.1
+Host: api.eccmp.com
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 98
+username=NTcwNjozOTQ=&password=1c106f90ec274340bde50ea78f410422&client_id=5706&grant_type=password
+```
+
+To the right is a sample token request message:
+
+To request a token:
+
+1. Submit the request message using the POST method, with the parameters defined above, to the following URL:
+  * https://api.eccmp.com/services2/authorization/oAuth2/Token
+2. If your call fails, you'll receive an error response message, indicating that the token has not been generated. If your call is successful, you'll receive a response message in JSON format containing the following information:
+
+Keyword | Required
+-|-
+access_token | The Oauth 2.0 token.
+token_type | This value will always be “bearer."
+expires_in | Lifetime of the token in seconds.
+refresh_token | This parameter is not currently used.
+
+```json
+{
+"access_token":"AAEAAG39ZdZRoGDRZJggMdv43pxrIVokFD57mhz03ncF",
+"token_type":"bearer",
+"expires_in":28800,
+"refresh_token":"h8fR!IAAAAFMbAP2AWWeil7JS9YKx3mURSZypddIawaUJQpBjUYarGI2g"
+}
+```
+
+To the right is a sample token response message (for the sake of readability, the token depicted here is much shorter than what a real token would be):
+
+### Using Your Token
+
+With your valid token, you can now begin making REST API service calls, utilizing any of the platform's RESTful APIs. The token must be provided within the header of each of your web service calls. Each call must contain an authorization to Bearer type, followed by your token text string.
