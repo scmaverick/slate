@@ -2,7 +2,6 @@
 title: Marketing Suite API Reference
 
 language_tabs:
-  - http
   - json
   - xml
 
@@ -189,9 +188,9 @@ As noted above, your token will expire after a set period of time. If you attemp
 
 # Payload
 
-> The three main sections in a JSON payload look like this: (General structure of the AET payload)
-
 ```json
+// The three main sections in a JSON payload look like this: (General structure of the AET payload)
+
 {
 "_data": { … },
 "_campaignMetadata": { … },
@@ -199,9 +198,9 @@ As noted above, your token will expire after a set period of time. If you attemp
 }
 ```
 
-> The three main sections in a XML payload look like this: (General structure of the AET payload)
-
 ```xml
+<!-- The three main sections in a XML payload look like this: (General structure of the AET payload) -->
+
 <_apiData xmlns:json="http://james.newtonking.com/projects/json">
   <_data>
   </_data>
@@ -217,3 +216,74 @@ The Advanced Event Trigger request payload is composed of the following three ma
 * **_data** (mandatory): This section defines the entity relationships for the payload, and contains the data for the relational insert and the campaign message.
 * **_campaignMetadata** (optional): If used, this section contains campaign data that is never inserted into an entity, but is available in a campaign for content blocks (not available for use in looping blocks).
 * **_importOptions** (optional): If used, this section defines the import rules for each entity present in the payload. If no section is present for a given entity, the data will be imported according to the defaults behavior for those fields.
+
+## Section: _data
+
+```json
+//Simple _data section with one parent join and one child join for JSON payload
+
+{
+  "_data": {
+    "recipient": [
+      {
+        "name_first": "John",
+        "name_last": "Smith",
+        "email": "john.smith@gmail.com",
+        "recipient_to_organization": { //An "upward" join - to a parent
+          "organization_name": "Experian",
+          "organization_city": "Costa Mesa"
+        },
+        "order.order_to_recipient": [ // A "downward" join - to a child
+          {
+            "order_no": "2834737",
+            "total": "129.99",
+          },
+          {
+            "order_no": "2834738",
+            "total": "59.99",
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+```xml
+<!-- Simple _data section with one parent join and one child join for XML payload -->
+
+<_apiData xmlns:json="http://james.newtonking.com/projects/json">
+  <_data>
+    <recipient json:Array="true">
+      <name_first>John</name_first>
+      <last_name>Smith</last_name>
+      <email>john.smith@gmail.com</email>
+      <recipient_to_organization json:Array="true"> <!-- An "upward" join - to a parent -->
+        <organization_name>Experian</organization_name>
+        <organization_city>Costa Mesa</organization_city>
+      </recipient_to_organization>
+      <order.order_to_recipient json:Array="true"> <!-- A "downward" join - to a child -->
+        <order_no>2834737</order_no>
+        <total>129.99</total>
+        </order.order_to_recipient>
+          www.experian.com/marketingservices Advanced Event Trigger Technical Guide | Version 1.5 | Page 14
+        <order.order_to_recipient json:Array="true">
+        <order_no>2834738</order_no>
+        <total>59.99</total>
+      </order.order_to_recipient>
+    </recipient>
+  </_data>
+</_apiData>
+```
+
+The _data object is a nested series of JSON objects, each one representing an entity record.
+
+If you are sending data to the AET endpoint to trigger a campaign send, the root node within _data must be the target entity for the campaign you wish to send the message. For instance, if the campaign you wish to trigger was created targeting the entity named “recipient,” then the root node of _data must be “recipient.”
+
+In the figure below, you can see the structure for the _data section. First, notice that the root node within _data is named “recipient,” and that it's a collection of objects. At the current time, relational insert and AET don't support multiple records in this root node collection (i.e., sending bulk or multiple messages at once, or inserting multiple records at once, for the target entity).
+
+## Section: _campaignMetadata
+
+The payload can contain an additional section called _campaignMetadata that is never inserted into the platform’s entity tables, but contains additional information available for personalization within the campaign or in content blocks (not supported on the entities that require looping blocks to personalize). The objects in this section are explicitly never saved, as they don’t relate to physical columns or the relational structure.
+
+This section is optional, and it’s irrelevant when using the Relational Data Insert endpoint.
