@@ -3,8 +3,6 @@ title: Marketing Suite API Reference
 
 language_tabs:
   - http
-  - json
-  - javascript
 
 toc_footers:
   - <a href='https://api.eccmp.com/services2/help/'>Swagger UI</a>
@@ -144,6 +142,8 @@ password | Required | Your Consumer Secret, found on the API ACCESS screen
 client_id | Optional | If used, must be set to your client identifier, which can be found on either the EDIT USER ACCESS RIGHTS screen or the API ACCESS screen.
 grant_type | Required | "password" (no quotes)
 
+> Below is a sample token request message:
+
 ```http
 POST https://api.eccmp.com/services2/authorization/oAuth2/Token HTTP/1.1
 Host: api.eccmp.com
@@ -152,20 +152,13 @@ Content-Length: 98
 username=NTcwNjozOTQ=&password=1c106f90ec274340bde50ea78f410422&client_id=5706&grant_type=password
 ```
 
-To the right is a sample token request message:
-
 To request a token:
 
 1. Submit the request message using the POST method, with the parameters defined above, to the following URL:
   * https://api.eccmp.com/services2/authorization/oAuth2/Token
 2. If your call fails, you'll receive an error response message, indicating that the token has not been generated. If your call is successful, you'll receive a response message in JSON format containing the following information:
 
-Keyword | Required
--|-
-access_token | The Oauth 2.0 token.
-token_type | This value will always be “bearer."
-expires_in | Lifetime of the token in seconds.
-refresh_token | This parameter is not currently used.
+> Below is a sample token response message (for the sake of readability, the token depicted here is much shorter than what a real token would be):
 
 ```json
 {
@@ -176,8 +169,19 @@ refresh_token | This parameter is not currently used.
 }
 ```
 
-To the right is a sample token response message (for the sake of readability, the token depicted here is much shorter than what a real token would be):
+Keyword | Required
+-|-
+access_token | The Oauth 2.0 token.
+token_type | This value will always be “bearer."
+expires_in | Lifetime of the token in seconds.
+refresh_token | This parameter is not currently used.
 
 ### Using Your Token
 
 With your valid token, you can now begin making REST API service calls, utilizing any of the platform's RESTful APIs. The token must be provided within the header of each of your web service calls. Each call must contain an authorization to Bearer type, followed by your token text string.
+
+Below is an example of an HTTP header:
+
+`Authorization: Bearer 123456789761657894564564fh7rgjuhsrn56yu4567y56re4qnu56sr`
+
+As noted above, your token will expire after a set period of time. If you attempt an API request call, and your token has expired, you'll receive a response message with the "401 - Unauthorized" response code. At this point, you'll need to repeat the steps described above to request a new token. Once you've received this new token, you can begin making API request calls again.
