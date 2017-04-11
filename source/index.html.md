@@ -131,6 +131,24 @@ If you ever need to reset or update your Consumer Secret, navigate to the API KE
 
 ## Requesting Your Token
 
+> Below is a sample token request message:
+```http
+POST https://api.eccmp.com/services2/authorization/oAuth2/Token HTTP/1.1
+Host: api.eccmp.com
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 98
+username=NTcwNjozOTQ=&password=1c106f90ec274340bde50ea78f410422&client_id=5706&grant_type=password
+```
+> Below is a sample token response message (for the sake of readability, the token depicted here is much shorter than what a real token would be):
+```json
+{
+"access_token":"AAEAAG39ZdZRoGDRZJggMdv43pxrIVokFD57mhz03ncF",
+"token_type":"bearer",
+"expires_in":28800,
+"refresh_token":"h8fR!IAAAAFMbAP2AWWeil7JS9YKx3mURSZypddIawaUJQpBjUYarGI2g"
+}
+```
+
 Once you have your Consumer Key and Consumer Secret, the next step in the authorization process is to submit a request message to obtain a token from the Oauth server. This message must be submitted using the POST method, with a Request Content Type of <application/x-www-form-urlencoded>.
 
 The request message must contain the following parameters:
@@ -142,32 +160,11 @@ password | Required | Your Consumer Secret, found on the API ACCESS screen
 client_id | Optional | If used, must be set to your client identifier, which can be found on either the EDIT USER ACCESS RIGHTS screen or the API ACCESS screen.
 grant_type | Required | "password" (no quotes)
 
-> Below is a sample token request message:
-
-```http
-POST https://api.eccmp.com/services2/authorization/oAuth2/Token HTTP/1.1
-Host: api.eccmp.com
-Content-Type: application/x-www-form-urlencoded
-Content-Length: 98
-username=NTcwNjozOTQ=&password=1c106f90ec274340bde50ea78f410422&client_id=5706&grant_type=password
-```
-
 To request a token:
 
 1. Submit the request message using the POST method, with the parameters defined above, to the following URL:
   * https://api.eccmp.com/services2/authorization/oAuth2/Token
 2. If your call fails, you'll receive an error response message, indicating that the token has not been generated. If your call is successful, you'll receive a response message in JSON format containing the following information:
-
-> Below is a sample token response message (for the sake of readability, the token depicted here is much shorter than what a real token would be):
-
-```json
-{
-"access_token":"AAEAAG39ZdZRoGDRZJggMdv43pxrIVokFD57mhz03ncF",
-"token_type":"bearer",
-"expires_in":28800,
-"refresh_token":"h8fR!IAAAAFMbAP2AWWeil7JS9YKx3mURSZypddIawaUJQpBjUYarGI2g"
-}
-```
 
 Keyword | Required
 -|-
