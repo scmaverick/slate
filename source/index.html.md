@@ -96,25 +96,11 @@ Load data to joined tables | Y | Y | Y | Y | Y
 Multiple records in the same request |   |   | Y | Y |  
 Endpoint can be used to trigger a Campaign | Y | Y | Y | Y |  
 
-## HTTP POST
-
-The HTTP POST endpoint is used to submit data collected from your consumers via a Web Form. The Web Form can either be hosted on the Marketing Suite platform, or hosted externally on some other site. Only one record can be submitted per API request. The input parameters and their associated values are all contained within the header of the HTTP request, rather than in the body.
-
-This endpoint does not support authentication, nor does it support JSON or XML. The request can optionally be secured by using the HTTPS protocol, as long as the correct Customer ID and Form ID are provided, and the right field names are posted to the Form. If using HTTPS, please note that the connection is encrypted, but the data being passed is not encrypted.
-
-The following diagram depicts the processing flow for loading data via the HTTP POST endpoint.
-
 # Authentication
 
 "Authentication" refers to the process of verifying that the person requesting a service is, in fact, who he says he is. Within Marketing Suite, authentication is handled by an open standard protocol called Oauth 2.0. This protocol was designed specifically for HTTP, and provides standard mechanisms to allow REST API users to request access to a particular service.
 
-Authentication with Oauth 2.0 consists of several steps. In the first step, the end-user obtains a "Consumer Key" and a "Consumer Secret." The Consumer Key is analogous to a username, and is considered public information; the Consumer Secret is analogous to a password, and is kept confidential. Both of these pieces are managed at the user level, and can be obtained from within the Marketing Suite user interface (see the Generating Your Consumer Key and Consumer Secret section below for details on this process).
-
-Oauth 2.0 supports a handful of different methods called "grant types" for granting access to a requested service. Marketing Suite utilizes only one grant type: "Password." The second step in the authentication process involves using this grant type to request a "token." A token is a text string that, when provided in a request message, will allow the user access to the requested service. Tokens are valid only for a certain period of time. By default, Marketing Suite tokens expire after eight hours, but you can optionally adjust this duration (see the Modifying Your Security Settings section for details on this process).
-
-The Oauth 2.0 protocol defines several different types of tokens. Marketing Suite uses the most common type of token, known as "bearer." A bearer token is a randomly-generated text string without any sort of encryption key. When you use this token to make an API service call, you are assumed to be the owner, or "bearer" of the token.
-
-To get a token, you must provide your credentials (the Consumer Key and Secret) directly to the authentication server via a POST request (see the Requesting Your Token section below for details on his process). If these credentials are valid, the server replies back with the token. With this token now in hand, you are now fully authenticated, and you can begin making REST API service calls.
+Authentication with Oauth 2.0 consists of several steps. In the first step, the end-user obtains a "Consumer Key" and a "Consumer Secret." The Consumer Key is analogous to a username, and is considered public information; the Consumer Secret is analogous to a password, and is kept confidential. Both of these pieces are managed at the user level, and can be obtained from within the Marketing Suite user interface (see the Generating Your Consumer Key and Consumer Secret section below for details on this process)...
 
 The following diagram depicts this authentication process.
 
@@ -141,9 +127,10 @@ Content-Type: application/x-www-form-urlencoded
 Content-Length: 98
 username=NTcwNjozOTQ=&password=1c106f90ec274340bde50ea78f410422&client_id=5706&grant_type=password
 ```
-> Below is a sample token response message (for the sake of readability, the token depicted here is much shorter than what a real token would be):
 
 ```json
+// Below is a sample token response message (for the sake of readability, the token depicted here is much shorter than what a real token would be):
+
 {
 "access_token":"AAEAAG39ZdZRoGDRZJggMdv43pxrIVokFD57mhz03ncF",
 "token_type":"bearer",
